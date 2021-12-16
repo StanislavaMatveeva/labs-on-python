@@ -27,23 +27,33 @@ class Parser:
         fileWorker = FileWorker.FileWorker()
         parser = self.createParser()
         args = parser.parse_args(sys.argv[1:])
+        for i in sys.argv:
+            print(i)
+        print(args)
         fileWorker.writeDataInFile(args)
-        if args.output:
-             fileWorker.outputFiles(args)
-        elif args.ascendingLength:
-            fileWorker.sortLinesByLengthInAscendingOrder(args)
-            fileWorker.outputFiles(args)
-        elif args.descendingLength:
-            fileWorker.sortLinesByLengthInDescendingOrder(args)
-            fileWorker.outputFiles(args)
-        elif args.ascendingWords:
-            fileWorker.sortLinesByAlphabetInAscendingOrder(args)
-            fileWorker.outputFiles(args)
-        elif args.descendingWords:
-            fileWorker.sortLinesByAlphabetInDescendingOrder(args)
-            fileWorker.outputFiles(args)
-        elif args.mix:
-            fileWorker.randomMixLines(args)
-            fileWorker.outputFiles(args)
-        else:
-            print('Wrong argument of command string\n')
+        for arg in sys.argv[5:]:
+            print(arg)
+            if arg == '-o' or arg == '--output':
+                print('Output files:\n')
+                fileWorker.outputFiles(args)
+            elif arg == '-al' or arg == '--ascendingLength':
+                print('Sorting strings by their lengths in ascending order\n')
+                fileWorker.sortLinesByLengthInAscendingOrder(args)
+                fileWorker.outputFiles(args)
+            elif arg == '-dl' or arg == '--descendingLength':
+                print('Sorting strings by their lengths in descending order\n')
+                fileWorker.sortLinesByLengthInDescendingOrder(args)
+                fileWorker.outputFiles(args)
+            elif arg == '-aw' or arg == '--ascendingWords':
+                print('Sorting strings by alphabet in ascending order\n')
+                fileWorker.sortLinesByAlphabetInAscendingOrder(args)
+                fileWorker.outputFiles(args)
+            elif arg == '-dw' or arg == '--descendingWords':
+                print('Sorting strings by alphabet in descending order\n')
+                fileWorker.sortLinesByAlphabetInDescendingOrder(args)
+                fileWorker.outputFiles(args)
+            elif arg == '-m' or arg == '--mix':
+                fileWorker.randomMixLines(args)
+                fileWorker.outputFiles(args)
+            else:
+                print('Wrong argument of command string\n')
