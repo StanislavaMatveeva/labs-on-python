@@ -22,6 +22,11 @@ class ClustersPresentation:
     AFFINITY = 1
     PLOT_ROWS_COUNT = 3
     PLOT_COLUMNS_COUNT = 2
+    DATASET_POINT_SIZE = 3
+    CENTER_POINT_SIZE = 5
+    CENTER_POINT_COLOR = 'black'
+    TEXT_POSITION_X = 2
+    TEXT_POSITION_Y = 7
     names = ['Main Dataset', 'K-means', 'Affinity Propagation', 'Mean Shift', 'Agglomerative Clustering', 'DBSCAN']
 
     def __init__(self, clustering):
@@ -46,14 +51,15 @@ class ClustersPresentation:
         if methodNumber != self.clustering.MAIN_DATASET:
             clusters, timeOfWork = self.clustering.getClusters(points, methodNumber)
             points = self.getColumns(points)
-            newPlot.scatter(points[self.FIRST_INDEX], points[self.SECOND_INDEX], s=3, c=clusters.labels_)
-            if methodNumber == self.clustering.KMEANS:
+            newPlot.scatter(points[self.FIRST_INDEX], points[self.SECOND_INDEX], s=self.DATASET_POINT_SIZE, c=clusters.labels_)
+            if methodNumber != self.clustering.AGGLOMERATIVE_CLUSTERING and methodNumber != self.clustering.DBSCAN:
                 centers = self.getColumns(clusters.cluster_centers_)
-                newPlot.scatter(centers[self.FIRST_INDEX], centers[self.SECOND_INDEX], s=5, c='black')
-            newPlot.text(2, 7, f'{timeOfWork}s')
+                newPlot.scatter(centers[self.FIRST_INDEX], centers[self.SECOND_INDEX], s=self.CENTER_POINT_SIZE, c=self.CENTER_POINT_COLOR)
+            amountOfClusters = len(numpy.unique(clusters.labels_))
+            newPlot.text(self.TEXT_POSITION_X, self.TEXT_POSITION_Y, f'{timeOfWork}s\n{amountOfClusters}')
         else:
             points = self.getColumns(points)
-            newPlot.scatter(points[self.FIRST_INDEX], points[self.SECOND_INDEX], s=3) 
+            newPlot.scatter(points[self.FIRST_INDEX], points[self.SECOND_INDEX], s=self.DATASET_POINT_SIZE) 
         graphic.xticks(())
         graphic.yticks(())
 

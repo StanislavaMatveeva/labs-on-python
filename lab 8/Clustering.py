@@ -22,6 +22,15 @@ class Clustering:
     RANDOM_AFFINITY_PROPAGATION = 6
     RANDOM_MEAN_SHIFT = 7
     AMOUNT_OF_METHODS = 5
+    PREFERENCE = -890000000
+    DAMPING = 0.96
+    CONVERGENCE_ITER = 5
+    BIN_SEEDING = True
+    MIN_BIN_FREQ = 15
+    BANDWIDTH = 50000
+    LINKAGE = 'ward'
+    EPS = 21000
+    MIN_SAMPLES = 5
 
     def __init__(self, points):
         if len(points) == 0:
@@ -34,13 +43,13 @@ class Clustering:
         if methodNumber == self.KMEANS:
             clusters = KMeans(n_clusters=self.AMOUNT_OF_CLUSTERS)
         elif methodNumber == self.AFFINITY_PROPAGATION:
-            clusters = AffinityPropagation(convergence_iter=1, copy=False, preference=-1)
+            clusters = AffinityPropagation(damping=self.DAMPING, convergence_iter=self.CONVERGENCE_ITER, preference=self.PREFERENCE)
         elif methodNumber == self.MEAN_SHIFT:
-            clusters = MeanShift(bandwidth=self.AMOUNT_OF_CLUSTERS)
+            clusters = MeanShift(bin_seeding=self.BIN_SEEDING, min_bin_freq=self.MIN_BIN_FREQ, bandwidth=self.BANDWIDTH)
         elif methodNumber == self.AGGLOMERATIVE_CLUSTERING:
-            clusters = AgglomerativeClustering(n_clusters=self.AMOUNT_OF_CLUSTERS, compute_full_tree=True, linkage='ward')
+            clusters = AgglomerativeClustering(n_clusters=self.AMOUNT_OF_CLUSTERS, linkage=self.LINKAGE)
         elif methodNumber == self.DBSCAN:
-            clusters = DBSCAN(min_samples=0)
+            clusters = DBSCAN(eps=self.EPS, min_samples=self.MIN_SAMPLES)
         startTime = time.time()
         clusters.fit(points)
         endTime = time.time() - startTime
